@@ -214,4 +214,34 @@ RSpec.describe ProjectsController, type: :controller do
       end
     end
   end
+
+  describe "#complete" do
+    context "認証済みのユーザーとして" do
+      let!(:project) { FactoryBot.create(:project, completed: nil) }
+      before do
+        sign_in project.owner
+      end
+      describe "成功しないプロジェクトの完了" do
+        before do
+          allow_any_instance_of(Project).
+            to receive(:update_attributes).
+            with(completed: true).
+            and_return(false)
+        end
+        it "プロジェクト画面にリダイレクトすること" do
+          patch :complete, params: { id: project.id }
+          expect(response).to redirect_to project_path(project)
+        end
+        it "フラッシュを設定すること" do
+          patch :complete, params: { id: project.id }
+          expect(flash[:alert]).to eq "Unable to complete project."
+        end
+        it "プロジェクトを完了済みにしないこと" do
+          expect {
+            patch :complete, params: { id: project.id }
+          }.to_not change(project, :completed)
+        end
+      end
+    end
+  end
 end
