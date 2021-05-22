@@ -20,6 +20,9 @@ group :development, :test do
   gem 'capybara', '~> 2.15.2'
   gem 'webdrivers'
   gem 'launchy', '~> 2.4.3'
+  gem 'shoulda-matchers',
+    git: 'https://github.com/thoughtbot/shoulda-matchers.git',
+    branch: 'rails-5'
   gem 'selenium-webdriver'
   gem 'rspec-rails', '~> 3.6.0'
   gem 'factory_bot_rails', '~> 4.10.0'

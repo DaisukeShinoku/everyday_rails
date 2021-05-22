@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do
+  it { is_expected.to validate_uniqueness_of(:name).scoped_to(:user_id) }
+  
   it "ユーザー単位では重複したプロジェクト名を許可しないこと" do
     user = User.create(
       first_name: "Joe",
